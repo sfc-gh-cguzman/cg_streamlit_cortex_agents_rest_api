@@ -20,6 +20,10 @@ All functionality has been modularized into organized packages:
 Run with: streamlit run streamlit_app.py
 """
 
+# Load environment variables from .env file FIRST (before any other imports)
+from dotenv import load_dotenv
+load_dotenv()
+
 import streamlit as st
 
 # Import the main application function from the modular architecture
