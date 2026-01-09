@@ -1,0 +1,38 @@
+# Cortex Agent External Integration Demo - Requirements
+# Core Streamlit dependencies
+streamlit>=1.49.0
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Snowflake connectivity
+snowflake-connector-python>=3.5.0
+snowflake-snowpark-python>=1.11.0
+
+# HTTP requests and Server-Sent Events
+requests>=2.31.0,<2.33.0
+sseclient-py>=1.8.0
+
+# PDF processing
+pypdfium2>=4.24.0
+
+# JSON and data handling
+typing-extensions>=4.5.0
+
+# Environment and configuration
+python-dotenv>=1.0.0
+
+# Cryptography for authentication (RSA keys and OAuth)
+cryptography>=41.0.0
+
+# JWT for RSA and OAuth authentication
+PyJWT>=2.8.0
+
+# Watchdog for file monitoring
+watchdog>=6.0.0
+
+# Structured logging
+structlog>=23.2.0
+rich>=13.0.0
+
+# OAuth support (Okta integration)
+# Note: requests already included above - used for OAuth token exchange

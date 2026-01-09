@@ -1,0 +1,262 @@
+# =============================================================================
+# STREAMLIT CONFIGURATION - CATPPUCCIN MOCHA CUSTOM THEME
+# =============================================================================
+# Configuration file for Snowflake Intelligence Experience
+# Created following Streamlit documentation best practices
+# Reference: https://docs.streamlit.io/develop/api-reference/configuration/config.toml#theme
+
+# =============================================================================
+# THEME CONFIGURATION - CATPPUCCIN MOCHA (CUSTOM DARK THEME)
+# =============================================================================
+
+[theme]
+# Set base to "dark" to create a custom dark theme with proper defaults
+base = "dark"
+
+# CATPPUCCIN MOCHA COLOR SCHEME
+# Primary color for buttons, sliders, and interactive elements
+# Using Catppuccin Mocha Blue (#89b4fa) for better brand consistency
+primaryColor = "#89b4fa"
+
+# Main content background color
+# Using Catppuccin Mocha Base (#1e1e2e) - comfortable dark background
+backgroundColor = "#1e1e2e"
+
+# Sidebar and widget background color  
+# Using Catppuccin Mocha Surface0 (#313244) - good contrast without harshness
+secondaryBackgroundColor = "#313244"
+
+# Text color for most content
+# Using Catppuccin Mocha Text (#cdd6f4) - optimized for dark background readability
+textColor = "#cdd6f4"
+
+# Font configuration - Space Grotesk for everything except code
+font = "Space Grotesk, 'Segoe UI', 'Roboto', sans-serif"
+headingFont = "Space Grotesk, 'Segoe UI', 'Roboto', sans-serif"
+codeFont = "Roboto Mono, 'Courier New', monospace"
+
+# Sidebar font configuration - inherit Space Grotesk for everything except code
+[theme.sidebar]
+font = "Space Grotesk, 'Segoe UI', 'Roboto', sans-serif"
+headingFont = "Space Grotesk, 'Segoe UI', 'Roboto', sans-serif"
+codeFont = "Roboto Mono, 'Courier New', monospace"
+
+# SPACE GROTESK FONT FACES - Modern geometric sans-serif
+[[theme.fontFaces]]
+family = "Space Grotesk"
+url = "app/static/Space_Grotesk/static/SpaceGrotesk-Light.ttf"
+style = "normal"
+weight = 300
+
+[[theme.fontFaces]]
+family = "Space Grotesk"
+url = "app/static/Space_Grotesk/static/SpaceGrotesk-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Space Grotesk"
+url = "app/static/Space_Grotesk/static/SpaceGrotesk-Medium.ttf"
+style = "normal"
+weight = 500
+
+[[theme.fontFaces]]
+family = "Space Grotesk"
+url = "app/static/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf"
+style = "normal"
+weight = 600
+
+[[theme.fontFaces]]
+family = "Space Grotesk"
+url = "app/static/Space_Grotesk/static/SpaceGrotesk-Bold.ttf"
+style = "normal"
+weight = 700
+
+# COMMENTED OUT: POPPINS FONT FACES - Replaced with Space Grotesk
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-Thin.ttf"
+# style = "normal"
+# weight = 100
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-ExtraLight.ttf"
+# style = "normal"
+# weight = 200
+
+# Note: Space Grotesk doesn't have italic variants - using oblique simulation if needed
+
+# ROBOTO MONO FONT FACES - For code blocks and inline code
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-Medium.ttf"
+style = "normal"
+weight = 500
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-SemiBold.ttf"
+style = "normal"
+weight = 600
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-Bold.ttf"
+style = "normal"
+weight = 700
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-Italic.ttf"
+style = "italic"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-MediumItalic.ttf"
+style = "italic"
+weight = 500
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-SemiBoldItalic.ttf"
+style = "italic"
+weight = 600
+
+[[theme.fontFaces]]
+family = "Roboto Mono"
+url = "app/static/Roboto_Mono/static/RobotoMono-BoldItalic.ttf"
+style = "italic"
+weight = 700
+
+# COMMENTED OUT: POPPINS ITALIC VARIANTS - Space Grotesk doesn't have italics
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-ThinItalic.ttf"
+# style = "italic"
+# weight = 100
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-ExtraLightItalic.ttf"
+# style = "italic"
+# weight = 200
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-LightItalic.ttf"
+# style = "italic"
+# weight = 300
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-Italic.ttf"
+# style = "italic"
+# weight = 400
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-MediumItalic.ttf"
+# style = "italic"
+# weight = 500
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-SemiBoldItalic.ttf"
+# style = "italic"
+# weight = 600
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-BoldItalic.ttf"
+# style = "italic"
+# weight = 700
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-ExtraBoldItalic.ttf"
+# style = "italic"
+# weight = 800
+
+# [[theme.fontFaces]]
+# family = "Poppins"
+# url = "app/static/Poppins/Poppins-BlackItalic.ttf"
+# style = "italic"
+# weight = 900
+
+# =============================================================================
+# SERVER CONFIGURATION
+# =============================================================================
+
+[server]
+# Enable static file serving for assets
+enableStaticServing = true
+
+# Server port
+port = 8501
+
+# Server address
+address = "localhost"
+
+# Enable CORS for cross-origin requests
+enableCORS = true
+
+# Enable XSRF protection
+enableXsrfProtection = true
+
+# Max upload size (in MB)
+maxUploadSize = 200
+
+# Max message size (in MB)
+maxMessageSize = 200
+
+# Disable websocket compression
+enableWebsocketCompression = false
+
+# =============================================================================
+# CLIENT CONFIGURATION
+# =============================================================================
+
+[client]
+# Show error details in the browser
+showErrorDetails = "full"
+
+
+
+# Toolbar mode
+toolbarMode = "viewer"
+
+# Show sidebar navigation
+showSidebarNavigation = true
+
+# =============================================================================
+# RUNNER CONFIGURATION
+# =============================================================================
+
+[runner]
+# Enable magic commands
+magicEnabled = true
+
+# Enable fast reruns
+fastReruns = true
+
+# Enforce serializable session state
+enforceSerializableSessionState = false
+
+# =============================================================================
+# LOGGER CONFIGURATION  
+# =============================================================================
+
+[logger]
+# Logging level
+level = "info"
+
+# Message format
+messageFormat = "%(asctime)s %(message)s"

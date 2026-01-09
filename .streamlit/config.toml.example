@@ -1,0 +1,274 @@
+# =============================================================================
+# STREAMLIT CONFIGURATION - CATPPUCCIN MOCHA CUSTOM THEME
+# =============================================================================
+# Configuration file for Snowflake Intelligence Experience
+# Created following Streamlit documentation best practices
+# Reference: https://docs.streamlit.io/develop/api-reference/configuration/config.toml#theme
+#
+# Copy this file to 'config.toml' to customize your Streamlit application
+
+# =============================================================================
+# THEME CONFIGURATION - CATPPUCCIN MOCHA (CUSTOM DARK THEME)
+# =============================================================================
+
+[theme]
+# Set base to "dark" to create a custom dark theme with proper defaults
+base = "dark"
+
+# CATPPUCCIN MOCHA COLOR SCHEME
+# Primary color for buttons, sliders, and interactive elements
+# Using Catppuccin Mocha Blue (#89b4fa) for better brand consistency
+primaryColor = "#89b4fa"
+
+# Main content background color
+# Using Catppuccin Mocha Base (#1e1e2e) - comfortable dark background
+backgroundColor = "#1e1e2e"
+
+# Sidebar and widget background color  
+# Using Catppuccin Mocha Surface0 (#313244) - good contrast without harshness
+secondaryBackgroundColor = "#313244"
+
+# Text color for most content
+# Using Catppuccin Mocha Text (#cdd6f4) - optimized for dark background readability
+textColor = "#cdd6f4"
+
+# Custom font family - Poppins with system fallbacks
+font = "Poppins, 'Segoe UI', 'Roboto', sans-serif"
+
+# POPPINS FONT FACES - Comprehensive weight support
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Thin.ttf"
+style = "normal"
+weight = 100
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-ExtraLight.ttf"
+style = "normal"
+weight = 200
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Light.ttf"
+style = "normal"
+weight = 300
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Medium.ttf"
+style = "normal"
+weight = 500
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-SemiBold.ttf"
+style = "normal"
+weight = 600
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Bold.ttf"
+style = "normal"
+weight = 700
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-ExtraBold.ttf"
+style = "normal"
+weight = 800
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Black.ttf"
+style = "normal"
+weight = 900
+
+# Italic variants
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-ThinItalic.ttf"
+style = "italic"
+weight = 100
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-ExtraLightItalic.ttf"
+style = "italic"
+weight = 200
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-LightItalic.ttf"
+style = "italic"
+weight = 300
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-Italic.ttf"
+style = "italic"
+weight = 400
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-MediumItalic.ttf"
+style = "italic"
+weight = 500
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-SemiBoldItalic.ttf"
+style = "italic"
+weight = 600
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-BoldItalic.ttf"
+style = "italic"
+weight = 700
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-ExtraBoldItalic.ttf"
+style = "italic"
+weight = 800
+
+[[theme.fontFaces]]
+family = "Poppins"
+url = "app/static/Poppins/Poppins-BlackItalic.ttf"
+style = "italic"
+weight = 900
+
+# =============================================================================
+# SERVER CONFIGURATION
+# =============================================================================
+
+[server]
+# Enable static file serving for assets
+enableStaticServing = true
+
+# Server port
+port = 8501
+
+# Server address
+address = "localhost"
+
+# Enable CORS for cross-origin requests
+enableCORS = true
+
+# Enable XSRF protection
+enableXsrfProtection = true
+
+# Max upload size (in MB)
+maxUploadSize = 200
+
+# Max message size (in MB)
+maxMessageSize = 200
+
+# Disable websocket compression
+enableWebsocketCompression = false
+
+# =============================================================================
+# CLIENT CONFIGURATION
+# =============================================================================
+
+[client]
+# Show error details in the browser
+showErrorDetails = "full"
+
+# Toolbar mode
+toolbarMode = "auto"
+
+# Show sidebar navigation
+showSidebarNavigation = true
+
+# =============================================================================
+# RUNNER CONFIGURATION
+# =============================================================================
+
+[runner]
+# Enable magic commands
+magicEnabled = true
+
+# Enable fast reruns
+fastReruns = true
+
+# Enforce serializable session state
+enforceSerializableSessionState = false
+
+# =============================================================================
+# LOGGER CONFIGURATION  
+# =============================================================================
+
+[logger]
+# Logging level
+level = "info"
+
+# Message format
+messageFormat = "%(asctime)s %(message)s"
+
+# =============================================================================
+# ALTERNATIVE THEME OPTIONS
+# =============================================================================
+# If you prefer a different color scheme, you can uncomment and modify 
+# any of these alternative configurations:
+
+# CATPPUCCIN MOCHA TEAL VARIANT:
+# primaryColor = "#94e2d5"  # Teal instead of Blue
+
+# CATPPUCCIN LATTE (LIGHT THEME):
+# [theme]
+# base = "light"
+# primaryColor = "#179299"
+# backgroundColor = "#eff1f5"
+# secondaryBackgroundColor = "#ccd0da"
+# textColor = "#4c4f69"
+# font = "Poppins, 'Segoe UI', 'Roboto', sans-serif"
+
+# =============================================================================
+# SETUP INSTRUCTIONS
+# =============================================================================
+
+# STEP 1: Copy Configuration
+# -------------------------
+# Copy this file to 'config.toml' (remove .example extension)
+
+# STEP 2: Restart Streamlit
+# -------------------------
+# After making changes, restart Streamlit: Ctrl+C then rerun
+
+# STEP 3: Customization (Optional)
+# --------------------------------
+# • Adjust colors by replacing hex codes with other Catppuccin colors
+# • Modify server settings for production deployment
+# • Change logging level to "debug" for development
+
+# =============================================================================
+# CATPPUCCIN COLOR REFERENCE
+# =============================================================================
+
+# MOCHA (DARK) PALETTE:
+# ---------------------
+# Rosewater: #f5e0dc    Flamingo: #f2cdcd    Pink: #f5c2e7      Mauve: #cba6f7
+# Red: #f38ba8          Maroon: #eba0ac      Peach: #fab387     Yellow: #f9e2af
+# Green: #a6e3a1        Teal: #94e2d5        Sky: #89dceb       Sapphire: #74c7ec
+# Blue: #89b4fa         Lavender: #b4befe    Text: #cdd6f4      Subtext1: #bac2de
+# Subtext0: #a6adc8     Overlay2: #9399b2    Overlay1: #7f849c  Overlay0: #6c7086
+# Surface2: #585b70     Surface1: #45475a    Surface0: #313244  Base: #1e1e2e
+# Mantle: #181825       Crust: #11111b
+
+# LATTE (LIGHT) PALETTE:
+# -----------------------
+# Rosewater: #dc8a78    Flamingo: #dd7878    Pink: #ea76cb      Mauve: #8839ef
+# Red: #d20f39          Maroon: #e64553      Peach: #fe640b     Yellow: #df8e1d
+# Green: #40a02b        Teal: #179299        Sky: #04a5e5       Sapphire: #209fb5
+# Blue: #1e66f5         Lavender: #7287fd    Text: #4c4f69      Subtext1: #5c5f77
+# Subtext0: #6c6f85     Overlay2: #7c7f93    Overlay1: #8c8fa1  Overlay0: #9ca0b0
+# Surface2: #acb0be     Surface1: #bcc0cc    Surface0: #ccd0da  Base: #eff1f5
+# Mantle: #e6e9ef       Crust: #dce0e8

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Agent External Integration - Architecture & Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+            position: relative;
+        }
+        
+        .flow-step:not(:last-child)::after {
+            content: "↓";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .step-content p {
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+        
+        .snowflake-component {
+            background: #0ea5e9;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin: 2px;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .tech-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .tech-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .tech-card ul {
+            list-style: none;
+            text-align: left;
+        }
+        
+        .tech-card li {
+            padding: 5px 0;
+            opacity: 0.9;
+        }
+        
+        .tech-card li::before {
+            content: "✓";
+            color: #68d391;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .architecture-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 30px;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .layer {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .layer.user {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .layer.frontend {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+        }
+        
+        .layer.api {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .layer.snowflake {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+        }
+        
+        .layer:not(:last-child)::after {
+            content: "⬇";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #667eea;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-card {
+            padding: 25px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .feature-card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .emoji {
+            font-size: 1.5em;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #f59e0b;
+            margin: 20px 0;
+        }
+        
+        .code-snippet {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tech-stack {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-step {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Cortex Agent External Integration</h1>
+            <p>Architecture & Application Flow Documentation</p>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ System Architecture</h2>
+            <div class="architecture-diagram">
+                <div class="layer user">
+                    <h3>👤 User Layer</h3>
+                    <p>Web Browser Interface • Interactive Chat Experience • Real-time Responses</p>
+                </div>
+                <div class="layer frontend">
+                    <h3>🎨 Frontend Layer</h3>
+                    <p>Streamlit Application • Dynamic UI Components • Agent Selection • Citation Display</p>
+                </div>
+                <div class="layer api">
+                    <h3>🔄 Integration Layer</h3>
+                    <p>REST API Client • Server-Sent Events • Thread Management • Authentication</p>
+                </div>
+                <div class="layer snowflake">
+                    <h3>❄️ Snowflake Intelligence Platform</h3>
+                    <p>Cortex Agents • Cortex Search • Agent Orchestration • Data Processing</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Application Flow</h2>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>🚀 Application Startup</h3>
+                        <p>Streamlit initializes and establishes connection to Snowflake using configured credentials</p>
+                        <div class="snowflake-component">Snowflake Connector</div>
+                        <div class="snowflake-component">Authentication Service</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>🔍 Agent Discovery</h3>
+                        <p>Application queries Snowflake to discover all available Cortex Agents and their configurations</p>
+                        <div class="snowflake-component">Cortex Agents API</div>
+                        <div class="snowflake-component">GET /api/v2/cortex/agents</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>⚙️ UI Configuration</h3>
+                        <p>Dynamic UI renders with agent dropdown, sample questions, and conversation interface</p>
+                        <div class="snowflake-component">Agent Metadata</div>
+                        <div class="snowflake-component">Sample Questions</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>💬 Thread Creation</h3>
+                        <p>When user starts conversation, a new thread is created for context management</p>
+                        <div class="snowflake-component">Cortex Threads API</div>
+                        <div class="snowflake-component">POST /api/v2/cortex/threads</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>🤖 Agent Execution</h3>
+                        <p>User message is sent to selected Cortex Agent with thread context for processing</p>
+                        <div class="snowflake-component">Cortex Agent Runtime</div>
+                        <div class="snowflake-component">POST /api/v2/cortex/agents/{agent}/runs</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>⚡ Real-time Streaming</h3>
+                        <p>Agent response streams back via Server-Sent Events for live updates</p>
+                        <div class="snowflake-component">Server-Sent Events</div>
+                        <div class="snowflake-component">Event Stream Processing</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h3>🔍 Citation Processing</h3>
+                        <p>Cortex Search results are processed and displayed as clickable citations</p>
+                        <div class="snowflake-component">Cortex Search</div>
+                        <div class="snowflake-component">Citation Annotations</div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">8</div>
+                    <div class="step-content">
+                        <h3>🎨 Response Rendering</h3>
+                        <p>Complete response with citations, tables, and charts is displayed to user</p>
+                        <div class="snowflake-component">Streamlit Components</div>
+                        <div class="snowflake-component">Dynamic Content Rendering</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>❄️ Snowflake Components Used</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="emoji">🤖</span> Cortex Agents</h3>
+                    <ul>
+                        <li>AI-powered conversational agents</li>
+                        <li>Natural language query processing</li>
+                        <li>Multi-tool orchestration</li>
+                        <li>Dynamic agent discovery</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">🔍</span> Cortex Search</h3>
+                    <ul>
+                        <li>Semantic search capabilities</li>
+                        <li>Document retrieval and ranking</li>
+                        <li>Citation generation</li>
+                        <li>Contextual content matching</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">🔗</span> REST APIs</h3>
+                    <ul>
+                        <li>Cortex Agents API</li>
+                        <li>Cortex Threads API</li>
+                        <li>Authentication endpoints</li>
+                        <li>Agent management operations</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">💬</span> Thread Management</h3>
+                    <ul>
+                        <li>Conversation context preservation</li>
+                        <li>Multi-turn dialogue support</li>
+                        <li>Parent-child message linking</li>
+                        <li>Thread persistence</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">⚡</span> Streaming Events</h3>
+                    <ul>
+                        <li>Server-Sent Events (SSE)</li>
+                        <li>Real-time response updates</li>
+                        <li>Progressive content delivery</li>
+                        <li>Event-driven architecture</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">🔐</span> Security & Auth</h3>
+                    <ul>
+                        <li>RSA key authentication</li>
+                        <li>Username/password auth</li>
+                        <li>Personal access tokens</li>
+                        <li>Secure credential management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ Technology Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-card">
+                    <h3>Frontend</h3>
+                    <ul>
+                        <li>Streamlit Framework</li>
+                        <li>Python Web Interface</li>
+                        <li>Dynamic UI Components</li>
+                        <li>Real-time Updates</li>
+                        <li>Interactive Chat Interface</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>Backend Integration</h3>
+                    <ul>
+                        <li>Python Requests Library</li>
+                        <li>SSE Client (sseclient-py)</li>
+                        <li>JSON Data Processing</li>
+                        <li>Asynchronous Operations</li>
+                        <li>Error Handling & Retries</li>
+                        <li>Structured Logging (structlog)</li>
+                        <li>Rich Console Output</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h3>Snowflake Integration</h3>
+                    <ul>
+                        <li>Snowflake Connector Python</li>
+                        <li>Snowpark Python</li>
+                        <li>Cortex Agent APIs</li>
+                        <li>REST API Integration</li>
+                        <li>Authentication Protocols</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Key Event Types</h2>
+            <div class="highlight">
+                <h3>🔄 Server-Sent Event Stream</h3>
+                <p>The application processes multiple event types from Snowflake's streaming API:</p>
+            </div>
+            
+            <div class="code-snippet">
+                <strong>Event Types Processed:</strong><br>
+                • response.text.delta     → Real-time text streaming<br>
+                • response.text.annotation → Citation references<br>
+                • response.tool.use       → Tool execution events<br>
+                • response.tool.result    → Tool results processing<br>
+                • response.table          → Data table rendering<br>
+                • response.chart          → Chart visualization<br>
+                • response.status         → Operation status updates<br>
+                • response.error          → Error handling
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Key Features Demonstrated</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="emoji">🔄</span> Dynamic Agent Discovery</h3>
+                    <p>Automatically discovers and lists all available Cortex Agents in your Snowflake account, with their configurations and sample questions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">💬</span> Threaded Conversations</h3>
+                    <p>Maintains conversation context across multiple questions using Snowflake's thread management system.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">📚</span> Smart Citations</h3>
+                    <p>Processes and displays clickable citations from Cortex Search results, linking responses to source documents.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">⚡</span> Real-time Streaming</h3>
+                    <p>Displays agent responses in real-time using Server-Sent Events for immediate user feedback.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Authentication Methods</h2>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="step-number">🔐</div>
+                    <div class="step-content">
+                        <h3>RSA Key Authentication (Recommended)</h3>
+                        <p>Uses public/private key pair for secure, password-less authentication</p>
+                        <div class="code-snippet">
+                            Private Key: /Library/Application Support/Snowflake/rsa_key.p8<br>
+                            JWT Token Generation: Automatic<br>
+                            Security Level: Highest
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">🔑</div>
+                    <div class="step-content">
+                        <h3>Username/Password Authentication</h3>
+                        <p>Traditional authentication method using Snowflake credentials</p>
+                        <div class="code-snippet">
+                            Method: Direct credential authentication<br>
+                            Configuration: Environment variables or config file<br>
+                            Security Level: Standard
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flow-step">
+                    <div class="step-number">🎫</div>
+                    <div class="step-content">
+                        <h3>Personal Access Token</h3>
+                        <p>Modern token-based authentication for API access</p>
+                        <div class="code-snippet">
+                            Token Format: Bearer token<br>
+                            Scope: Account-level access<br>
+                            Security Level: High
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Performance & Scalability</h2>
+            <div class="highlight">
+                <h3>🚀 Optimizations Implemented</h3>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li>✅ <strong>Caching:</strong> Agent metadata cached for 5 minutes to reduce API calls</li>
+                    <li>✅ <strong>Streaming:</strong> Real-time response delivery via SSE for immediate feedback</li>
+                    <li>✅ <strong>Lazy Loading:</strong> UI components loaded dynamically based on user actions</li>
+                    <li>✅ <strong>Error Handling:</strong> Comprehensive error handling with graceful fallbacks</li>
+                    <li>✅ <strong>Connection Pooling:</strong> Efficient Snowflake connection management</li>
+                    <li>✅ <strong>Modular Architecture:</strong> 12 focused modules with single responsibilities</li>
+                    <li>✅ <strong>Professional Logging:</strong> Structured logging with rich formatting</li>
+                    <li>✅ <strong>Configuration Management:</strong> Centralized configuration system</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏗️ Modular Architecture Benefits</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3><span class="emoji">🧩</span> Modular Design</h3>
+                    <p>43-line entry point with 12 focused modules, each with single responsibility and clear interfaces.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">⚙️</span> Centralized Configuration</h3>
+                    <p>Single config.py file for all user-configurable settings with clean separation of concerns.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">📝</span> Professional Standards</h3>
+                    <p>Enterprise-ready code quality with structured logging, comprehensive documentation, and clean comments.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3><span class="emoji">🔧</span> Developer Experience</h3>
+                    <p>Easy testing, debugging, and extension with clear module boundaries and comprehensive documentation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white; border-bottom-color: white;">🎉 Enterprise-Ready Production Application</h2>
+            <p style="font-size: 1.2em; margin-top: 20px;">
+                This professional modular architecture demonstrates a complete external integration with Snowflake's Cortex Agents,<br>
+                showcasing real-time AI conversations, intelligent search, seamless user experience, and enterprise-grade code quality.<br>
+                <strong>Built with Python 3.11+, structured logging, and comprehensive professional standards.</strong>
+            </p>
+            
+            <div class="highlight" style="margin-top: 30px; background: rgba(255,255,255,0.1); border-left-color: white;">
+                <h3 style="color: white;">🙏 Acknowledgements</h3>
+                <p style="color: rgba(255,255,255,0.9);">
+                    This application is built upon the strong foundational work developed by <strong>Jeevan Rag</strong>.<br>
+                    His original implementation provided the essential groundwork for this enterprise-ready modular architecture.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
