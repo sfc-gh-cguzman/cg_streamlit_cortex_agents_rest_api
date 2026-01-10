@@ -46,6 +46,7 @@ def discover_agents_via_sql(session) -> List[Dict]:
                 , "database_name" DATABASE_NAME
                 , "schema_name" SCHEMA_NAME
                 , "name" AGENT_NAME
+                , "comment" AS COMMENT
             from $1
             order by AGENT_NAME
         """
@@ -61,7 +62,8 @@ def discover_agents_via_sql(session) -> List[Dict]:
                 'fully_qualified_name': row['FULLY_QUALIFIED_AGENT'],
                 'database': row['DATABASE_NAME'],
                 'schema': row['SCHEMA_NAME'],
-                'name': row['AGENT_NAME']
+                'name': row['AGENT_NAME'],
+                'comment': row["COMMENT"]
             })
         
         logger.info(f"SQL discovery found {len(agents)} agents in account")
@@ -121,7 +123,7 @@ def get_available_agents(account: str, auth_token: str, ssl_verify: bool = True,
             database = sql_agent['database']
             schema = sql_agent['schema']
             agent_name = sql_agent['name']
-            
+            comment = sql_agent['comment']
             try:
                 # Get agent details via API
                 detail_url = f"{base_url}/databases/{database}/schemas/{schema}/agents/{agent_name}"
@@ -150,7 +152,7 @@ def get_available_agents(account: str, auth_token: str, ssl_verify: bool = True,
                         'fully_qualified_name': sql_agent.get('fully_qualified_name'),
                         'owner': agent_details.get('owner', 'N/A'),
                         'created_on': agent_details.get('created_on', 'N/A'),
-                        'comment': agent_details.get('comment', None),
+                        'comment': comment,
                         'sample_questions': sample_questions,
                         'tools_count': len(agent_spec.get('tools', [])),
                         'models': agent_spec.get('models', {}),
@@ -263,6 +265,9 @@ def get_available_agents(account: str, auth_token: str, ssl_verify: bool = True,
                     error=str(e)
                 )
                 continue
+    
+    # Sort agents alphabetically by display_name for consistent dropdown ordering
+    all_agents.sort(key=lambda x: (x.get('display_name') or x.get('name', '')).lower())
     
     logger.info(
         "Agent discovery completed",
