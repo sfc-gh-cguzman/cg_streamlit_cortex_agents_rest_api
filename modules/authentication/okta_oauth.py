@@ -851,17 +851,28 @@ class OktaOAuthProvider:
         </div>
         """, unsafe_allow_html=True)
         
-        # Login button - centered
+        # Login button - centered, opens in same tab
         auth_url = self.get_authorization_url()
         
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.link_button(
-                "🔑 Sign in with Okta",
-                auth_url,
-                use_container_width=True,
-                type="primary"
-            )
+        st.markdown(f"""
+        <div style="display: flex; justify-content: center; margin: 2rem 0;">
+            <a href="{auth_url}" target="_self" style="
+                display: inline-block;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 1rem 3rem;
+                border-radius: 12px;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 1.1rem;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                transition: all 0.3s ease;
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.5)';"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)';">
+                🔑 Sign in with Okta
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Security badges - compact row
         st.markdown("""
