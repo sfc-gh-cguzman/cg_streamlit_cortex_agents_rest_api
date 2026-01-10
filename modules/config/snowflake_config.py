@@ -85,7 +85,8 @@ class SnowflakeConfig:
         
         # Load authentication details with simple key lookup
         self.account = self._get_config('account', 'SNOWFLAKE_ACCOUNT')
-        self.user = self._get_config('user', 'SNOWFLAKE_USER')
+        # User is optional at load time - OAuth may provide user identity
+        self.user = self._get_config('user', 'SNOWFLAKE_USER', required=False)
         self.password = self._get_config('password', 'SNOWFLAKE_PASSWORD', required=False)
         self.pat = self._get_config('pat', 'SNOWFLAKE_PAT', required=False)
         

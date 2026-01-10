@@ -21,6 +21,7 @@ Run with: streamlit run streamlit_app.py
 """
 
 # Load environment variables from .env file FIRST (before any other imports)
+import os
 from dotenv import load_dotenv
 load_dotenv()
 

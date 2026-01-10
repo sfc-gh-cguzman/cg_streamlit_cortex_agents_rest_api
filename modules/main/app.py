@@ -93,23 +93,23 @@ from modules.ui import (
 from modules.config.session_state import ensure_session_state_defaults
 
 # ------------------------------------------------------------------------------
-# Global Configuration and Client
+# Global Configuration and Client (Lazy Initialization)
 # ------------------------------------------------------------------------------
+# These are initialized lazily inside main() to ensure .env is loaded first
+# Do NOT initialize at module level - OAuth env vars won't be available yet
+snowflake_client = None
+snowflake_config = None
+
+
 def get_snowflake_client(ssl_verify: bool = None):
     """Get Snowflake client instance with SSL verification setting"""
     config = SnowflakeConfig()
     
     # Use the ssl_verify parameter to override config's SSL setting
-    # If no parameter provided, use config's SSL setting
     if ssl_verify is not None:
         config.ssl_verify = ssl_verify
     
     return ExternalSnowflakeClient(config), config
-
-# Initialize client and config with SSL verification setting
-# This ensures the cache respects SSL verification changes
-ssl_verify_env = os.environ.get('SNOWFLAKE_SSL_VERIFY', 'true').lower() in ('true', 'yes', '1')
-snowflake_client, snowflake_config = get_snowflake_client(ssl_verify=ssl_verify_env)
 
 # ------------------------------------------------------------------------------
 # Initialize DataFrame Options
@@ -402,6 +402,13 @@ def main():
     logger = get_logger()
     
     # ==========================================================================
+    # STEP 0: Initialize Snowflake Config (must happen after .env is loaded)
+    # ==========================================================================
+    # This is done here (not at module level) to ensure .env variables are loaded
+    ssl_verify_env = os.environ.get('SNOWFLAKE_SSL_VERIFY', 'true').lower() in ('true', 'yes', '1')
+    snowflake_client, snowflake_config = get_snowflake_client(ssl_verify=ssl_verify_env)
+    
+    # ==========================================================================
     # STEP 1: OAuth Authentication (MUST be first - before any other UI)
     # ==========================================================================
     if is_oauth_enabled():
@@ -443,7 +450,7 @@ def main():
             st.stop()
             return
         
-        # Show user info in sidebar (profile button + logout)
+        # Show user info in sidebar (compact user info at top)
         oauth_provider.show_user_info_sidebar()
     
     # ==========================================================================

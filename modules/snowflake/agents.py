@@ -45,9 +45,9 @@ def discover_agents_via_sql(session) -> List[Dict]:
                 , concat_ws('.', "database_name", "schema_name", "name") FULLY_QUALIFIED_AGENT
                 , "database_name" DATABASE_NAME
                 , "schema_name" SCHEMA_NAME
-                , "name" NAME
+                , "name" AGENT_NAME
             from $1
-            order by NAME
+            order by AGENT_NAME
         """
         
         
@@ -57,7 +57,7 @@ def discover_agents_via_sql(session) -> List[Dict]:
         agents = []
         for row in results:
             agents.append({
-                'display_name': row['DISPLAY_NAME'] or row['AGENT_NAME'].replace('_', ' ').title(),
+                'display_name': row['DISPLAY_NAME'],
                 'fully_qualified_name': row['FULLY_QUALIFIED_AGENT'],
                 'database': row['DATABASE_NAME'],
                 'schema': row['SCHEMA_NAME'],

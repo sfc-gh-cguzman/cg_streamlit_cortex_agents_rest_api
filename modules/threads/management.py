@@ -37,11 +37,13 @@ def create_thread(snowflake_config, snowflake_client=None) -> Optional[str]:
         Thread ID string if successful, None if failed
     """
     try:
-        # Get auth token directly from config - USE PAT TOKEN FOR CORTEX AGENTS API
-        if snowflake_config.pat:
+        # Get auth token - OAuth token takes priority, then PAT
+        if hasattr(snowflake_config, 'oauth_token') and snowflake_config.oauth_token:
+            auth_token = snowflake_config.oauth_token
+        elif snowflake_config.pat:
             auth_token = snowflake_config.pat
         else:
-            st.error(":material/error: No PAT token available - Cortex Agents API requires PAT token")
+            # No token available - this shouldn't happen if auth flow is correct
             return None
         
         # Build URL following official API spec
@@ -112,14 +114,15 @@ def get_thread_messages(thread_id: str, snowflake_config, snowflake_client,
         ThreadResponse object if successful, None if failed
     """
     try:
-        # Get auth token directly from config
-        if snowflake_config.pat:
+        # Get auth token - OAuth token takes priority, then PAT, then RSA
+        if hasattr(snowflake_config, 'oauth_token') and snowflake_config.oauth_token:
+            auth_token = snowflake_config.oauth_token
+        elif snowflake_config.pat:
             auth_token = snowflake_config.pat
         elif snowflake_config.private_key:
             # Generate JWT token if using RSA key
             auth_token = get_auth_token_for_agents(snowflake_config, snowflake_client)
         else:
-            st.error("No authentication token available")
             return None
         
         # Build URL following official API spec
@@ -211,14 +214,15 @@ def delete_thread(thread_id: str, snowflake_config, snowflake_client) -> bool:
         True if successful, False if failed
     """
     try:
-        # Get auth token directly from config
-        if snowflake_config.pat:
+        # Get auth token - OAuth token takes priority, then PAT, then RSA
+        if hasattr(snowflake_config, 'oauth_token') and snowflake_config.oauth_token:
+            auth_token = snowflake_config.oauth_token
+        elif snowflake_config.pat:
             auth_token = snowflake_config.pat
         elif snowflake_config.private_key:
             # Generate JWT token if using RSA key
             auth_token = get_auth_token_for_agents(snowflake_config, snowflake_client)
         else:
-            st.error("No authentication token available")
             return False
         
         # Build URL following official API spec
@@ -278,14 +282,15 @@ def update_thread(thread_id: str, thread_name: str, snowflake_config, snowflake_
         True if successful, False if failed
     """
     try:
-        # Get auth token directly from config
-        if snowflake_config.pat:
+        # Get auth token - OAuth token takes priority, then PAT, then RSA
+        if hasattr(snowflake_config, 'oauth_token') and snowflake_config.oauth_token:
+            auth_token = snowflake_config.oauth_token
+        elif snowflake_config.pat:
             auth_token = snowflake_config.pat
         elif snowflake_config.private_key:
             # Generate JWT token if using RSA key
             auth_token = get_auth_token_for_agents(snowflake_config, snowflake_client)
         else:
-            st.error("No authentication token available")
             return False
         
         # Build URL following official API spec
@@ -347,14 +352,15 @@ def list_threads(snowflake_config, snowflake_client, origin_application: Optiona
         List of ThreadMetadata objects if successful, None if failed
     """
     try:
-        # Get auth token directly from config
-        if snowflake_config.pat:
+        # Get auth token - OAuth token takes priority, then PAT, then RSA
+        if hasattr(snowflake_config, 'oauth_token') and snowflake_config.oauth_token:
+            auth_token = snowflake_config.oauth_token
+        elif snowflake_config.pat:
             auth_token = snowflake_config.pat
         elif snowflake_config.private_key:
             # Generate JWT token if using RSA key
             auth_token = get_auth_token_for_agents(snowflake_config, snowflake_client)
         else:
-            st.error("No authentication token available")
             return None
         
         # Build URL following official API spec
